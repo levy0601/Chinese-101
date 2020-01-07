@@ -1,3 +1,4 @@
+
 header {
   text-align: center;
   background-color: gray;
@@ -7,29 +8,52 @@ header {
   width: 40%
 }
 
+body {
+  background: pink;
+  color: black;
+  
+}
 
 #userDetect{
-  font-size: 60 px;
+  font-size: 60pt;
 	color: black;
   text-align: center;
+}
 
+#box{
+  font-weight: 300;
+  display: flex;
+  position: relative;
+
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: Helvetica neue, roboto;
 }
 
 #mainFrame {
-  width: 60%;
+  width: 40%; 
+  height: 40%;
   margin: auto;
-  background-color: gray;
+  background-color: rgb(66, 64, 64);
   border-style: solid;
   border-width: 5px;
+  border-radius: 100px ;
+
+  
+}
+
+#faceSVG{
+    margin: auto;
 }
 
 #title{
-  color: black;
+  color: white;
   font-size: 54px;
 }
 
 #subTitle{
-  color: black;
+  color: white;
   font-size: 20px;
 }
 #topBlock{
@@ -43,7 +67,7 @@ header {
   justify-content:center;
 }
 
-#robot{
+/* #robot{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,12 +79,12 @@ header {
   display: flex;
   flex-direction: column;
   justify-content:center;
-}
-span{
-  color: black;
+} */
+span,p,form{
+  color: white;
   font-size: 20px;
-  display: inline-block;
 }
+
 
 .option {
   width: 100%;

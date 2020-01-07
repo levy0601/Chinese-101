@@ -1,6 +1,67 @@
-var mainFrame = document.getElementById("mainFrame");
+var mainFrame = document.getElementById("box");
 var userDetect = document.getElementById("userDetect");
 
+var svg = document.getElementById("faceSVG");
+var rect = svg.getBoundingClientRect();
+const windowWidth = window.innerWidth;
+const windowHeight = window.innerHeight;
+var leftpupils = document.getElementById("leftpuplis");
+var rightpupils = document.getElementById("rightpuplis");
+var time = generateRandomNumber()
+
+blink();
+document.addEventListener("mousemove", function(event) {
+  getCursorCoordinate(event);
+});
+
+function blink(){ 
+  var left = d3.select(leftpupils);
+  time  = generateRandomNumber();
+  left.transition()
+    .duration(1000)
+    .attr("r", 0)
+    .transition()
+    .duration(1000)
+    .attr("r", 10);
+   var right = d3.select(rightpupils);
+   right.transition()
+    .duration(1000)
+    .attr("r", 0)
+    .transition()
+    .duration(1000)
+    .attr("r", 10);
+  console.log(time);
+  setTimeout(blink,time);
+
+
+}
+
+
+function movepupils(cx,cy){
+  let x = 0;
+  let y = 0;
+  x = (cx / windowWidth * 1.0 - 0.5)* 40 + 100;
+  y = (cy / windowHeight *1.0 - 0.5)* 40 + 150;
+  leftpupils.setAttribute("cx", x);
+  leftpupils.setAttribute("cy", y);
+  x = (cx / windowWidth * 1.0 - 0.5)* 40 + 300;
+  y = (cy / windowHeight *1.0 - 0.5)* 40 + 150;
+  rightpupils.setAttribute("cx", x);
+  rightpupils.setAttribute("cy", y);
+
+}
+
+function getCursorCoordinate(e){
+  var x = e.clientX;
+  var y = e.clientY;
+  movepupils(x,y);
+}
+
+function generateRandomNumber(){
+  return (Math.floor(Math.random() * 10) + 1 )*1000
+}
+
+/* -------------user detection ------------*/
 /* This function checks and sets up the camera */
 function startVideo() {
   if (navigator.mediaDevices && 
@@ -20,7 +81,7 @@ function handleUserMediaSuccess(stream){
   video.srcObject = stream;
   // video.play();
   console.log("success");
-  window.setInterval(captureImageFromVideo, 100);
+  window.setInterval(captureImageFromVideo, 500);
 }
 
 // The variable that holds the detected face information, which will be updated through Firebase callbacks
@@ -54,7 +115,8 @@ function captureImageFromVideo() {
     context.fillStyle = "#0F0";
     context.stroke();
     mainFrame.style.visibility = "visible";
-    userDetect.innerHTML = "user Detected!"
+    userName = face.name;
+    userDetect.innerHTML = "user Detected! welcome user " + userName; 
   }else{
     mainFrame.style.visibility = "hidden";
     userDetect.innerHTML = "Can not detect user, lesson paused!"
@@ -69,6 +131,7 @@ function sendSnapshot() {
   const commaIndex = data.indexOf(",");
   const imgString = data.substring(commaIndex+1,data.length);
   storeImage(imgString);
+  console.log("photo sent;");
 }
 
 // Initialize Firebase
@@ -97,28 +160,15 @@ dbRef.on("value", newFaceDetected);
 function newFaceDetected(snapshot) {
   detection = snapshot.val();
 }
+/* -------------user detection ------------*/
 
-
-
-
-// ---------  setup voice recongition 
-var grammar =
-  "#JSGF V1.0; grammar emar; public <greeting> = hello | hi; <person> = maya | alisa;";
-var recognition = new window.webkitSpeechRecognition();
-var speechRecognitionList = new window.webkitSpeechGrammarList();
-speechRecognitionList.addFromString(grammar, 1);
-recognition.grammars = speechRecognitionList;
-recognition.continuous = true;
-recognition.lang = "zh-CN";
-recognition.interimResults = false;
-recognition.maxAlternatives = 1;
-// ---------  setup voice recongition 
 
 // ---------  varible inti 
 var vacabBotton = document.getElementById("vocab");
 var vacabSubBotton = document.createElement("button");
 var speakingBotton = document.getElementById("speaking");
 var speakingSubButton = document.createElement("button");
+var speakingStopButton = document.createElement("button");
 var speakingAgainButton = document.createElement("button");
 var mainblock = document.getElementById("mainBlock");
 var subTitle = document.getElementById("subTitle");
@@ -126,30 +176,30 @@ var buttonBlock = document.getElementById("buttonBlock");
 var targetLanguage = "zh-CN";
 
 var questionList = [
-  ["不客气", "再见", "你好", "请", "what is 'you are welcome' in Chinese","不客气"],
-  ["不客气", "再见", "你好", "请", "what is 'goodbye' in Chinese","再见"],
-  ["不客气", "再见", "你好", "请", "what is 'hello' in Chinese","你好"],
-  ["不客气", "再见", "你好", "请", "what is 'please' in Chinese","请"],
-  ["坐", "听", "说", "读", "what is 'listen' in Chinese","听"],
-  ["坐", "听", "说", "读", "what is 'sit' in Chinese","坐"],
-  ["坐", "听", "说", "读", "what is 'speak' in Chinese","说"],
-  ["坐", "听", "说", "读", "what is 'read' in Chinese","读"],
-  ["咖啡", "水", "牛奶", "啤酒", "what is 'milk' in Chinese","牛奶"],
-  ["咖啡", "水", "牛奶", "啤酒", "what is 'coffee' in Chinese","咖啡"],
-  ["咖啡", "水", "牛奶", "啤酒", "what is 'water' in Chinese","水"],
-  ["咖啡", "水", "牛奶", "啤酒", "what is 'beer' in Chinese","啤酒"],
-  ["邮局", "银行", "医院", "超市", "what is 'bank' in Chinese","银行"],
-  ["邮局", "银行", "医院", "超市", "what is 'post office' in Chinese","邮局"],
-  ["邮局", "银行", "医院", "超市", "what is 'hospital' in Chinese","医院"],
-  ["邮局", "银行", "医院", "超市", "what is 'supermarket' in Chinese","超市"],
-  ["父亲", "母亲", "儿子", "女儿", "what is 'father' in Chinese","父亲"],
-  ["父亲", "母亲", "儿子", "女儿", "what is 'mother' in Chinese","母亲"],
-  ["父亲", "母亲", "儿子", "女儿", "what is 'son' in Chinese","儿子"],
-  ["父亲", "母亲", "儿子", "女儿", "what is 'daughter' in Chinese","女儿"],
-  ["东", "西", "南", "北", "what is 'east' in Chinese","东"],
-  ["东", "西", "南", "北", "what is 'west' in Chinese","西"],
-  ["东", "西", "南", "北", "what is 'south' in Chinese","南"],
-  ["东", "西", "南", "北", "what is 'north' in Chinese","北"],
+  ["不客气", "再见", "你好", "请", "what is you are welcome in chinese","不客气"],
+  ["不客气", "再见", "你好", "请", "what is goodbye in chinese","再见"],
+  ["不客气", "再见", "你好", "请", "what is hello in chinese","你好"],
+  ["不客气", "再见", "你好", "请", "what is please in chinese","请"],
+  ["坐", "听", "说", "读", "what is listen in chinese","听"],
+  ["坐", "听", "说", "读", "what is sit in chinese","坐"],
+  ["坐", "听", "说", "读", "what is speak in chinese","说"],
+  ["坐", "听", "说", "读", "what is read in chinese","读"],
+  ["咖啡", "水", "牛奶", "啤酒", "what is milk in chinese","牛奶"],
+  ["咖啡", "水", "牛奶", "啤酒", "what is coffee in chinese","咖啡"],
+  ["咖啡", "水", "牛奶", "啤酒", "what is water in chinese","水"],
+  ["咖啡", "水", "牛奶", "啤酒", "what is beer in chinese","啤酒"],
+  ["邮局", "银行", "医院", "超市", "what is bank in chinese","银行"],
+  ["邮局", "银行", "医院", "超市", "what is post office in chinese","邮局"],
+  ["邮局", "银行", "医院", "超市", "what is hospital in chinese","医院"],
+  ["邮局", "银行", "医院", "超市", "what is supermarket in chinese","超市"],
+  ["父亲", "母亲", "儿子", "女儿", "what is father in chinese","父亲"],
+  ["父亲", "母亲", "儿子", "女儿", "what is mother in chinese","母亲"],
+  ["父亲", "母亲", "儿子", "女儿", "what is son in chinese","儿子"],
+  ["父亲", "母亲", "儿子", "女儿", "what is daughter in chinese","女儿"],
+  ["东", "西", "南", "北", "what is east in chinese","东"],
+  ["东", "西", "南", "北", "what is west in chinese","西"],
+  ["东", "西", "南", "北", "what is south in chinese","南"],
+  ["东", "西", "南", "北", "what is north in chinese","北"],
 
 
 ];
@@ -179,8 +229,21 @@ var speakingList = [
 speakingSubButton.onclick = voiceReconigtion 
 vacabSubBotton.onclick = showAnswer;
 speakingAgainButton.onclick = speakAgain;
+speakingStopButton.onclick = recognitionEnded;
 //--onclick call back-----
 
+// ---------  setup voice recongition 
+var grammar =
+  "#JSGF V1.0; grammar emar; public <greeting> = hello | hi; <person> = maya | alisa;";
+var recognition = new window.webkitSpeechRecognition();
+var speechRecognitionList = new window.webkitSpeechGrammarList();
+speechRecognitionList.addFromString(grammar, 1);
+recognition.grammars = speechRecognitionList;
+recognition.continuous = true;
+recognition.lang = "zh-CN";
+recognition.interimResults = false;
+recognition.maxAlternatives = 1;
+// ---------  setup voice recongition 
 
 //voice recongition -------------------
 function voiceReconigtion() {
@@ -204,7 +267,7 @@ function recognitionEnded() {
 //voice recongition -------------------
 
 
-// speaking Pratice ----------------------------------
+// speaking Practice ----------------------------------
 function speakingPratice(){
     clear();
     shuffleContent(speakingList);
@@ -228,9 +291,13 @@ function createNewSpeakingTest(array){
   speakingSubButton.setAttribute("id","speakingSubButton");
   speakingSubButton.innerHTML = "click me to say";
   buttonBlock.appendChild(speakingSubButton);
+  speakingStopButton.setAttribute("id","speakingStopButton");
+  speakingStopButton.innerHTML = "click me to stop voice detect";
+  buttonBlock.appendChild(speakingStopButton);
   speakingAgainButton.setAttribute("id","speakingAgainButton");
   speakingAgainButton.innerHTML = "click me to listen again";
   buttonBlock.appendChild(speakingAgainButton);
+  
 
 
 return div;

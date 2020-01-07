@@ -1,0 +1,48 @@
+<html>
+
+<head>
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+</head>
+
+<body>
+  <div id="box">
+    <svg width="400" height="400" id="faceSVG">
+      <circle cx="200" cy="200" r="200" stroke="black" stroke-width="3" />
+      <circle cx="50" cy="60" r="50" fill="white" stroke="black" stroke-width="3" />
+      <circle cx="350" cy="60" r="50" fill="white" stroke="black" stroke-width="3" />
+      <circle cx="100" cy="150" r="40" fill="white" class="animate" />
+      <circle cx="300" cy="150" r="40" fill="white" class="animate" />
+      <circle cx="100" cy="150" r="10" fill="pink" id="leftpuplis" class="animate" />
+      <circle cx="300" cy="150" r="10" fill="pink" id="rightpuplis" class="animate" />
+    </svg>
+    <div id="mainFrame">
+      <div id="topBlock">
+        <h1 id="title">Chinese 101</h1>
+        <p id="subTitle"> </p>
+      </div>
+      <div id="mainBlock">
+        <p> choose a following option to start your class </p>
+      </div>
+      <div id="buttonBlock">
+      </div>
+      <div id="bottonBlock">
+        <div>
+          <button id="vocab" onclick="vocabPratice()">vocabulary practices</button>
+          <button id="speaking" onclick="speakingPratice()"> speaking practices</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="userDetect"> </div>
+  <div class="wrapper">
+    <!--The canvas for displaying images captured from the camera-->
+    <canvas id="mainCanvas" height=240 width=320></canvas>
+    <!--Button to start video stram -->
+    <button type="button" onclick="startVideo()">Start video</button>
+    <!--     <button type="button" onclick="sendSnapshot()">Take a snapshot and send</button> -->
+    <!--The video element for capturing images from the camera -->
+    <video id="myVideo" width="320" height="240" autoplay="true" hidden>
+    </video>
+  </div>
+</body>
