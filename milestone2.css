@@ -1,0 +1,109 @@
+header {
+  text-align: center;
+  background-color: gray;
+  padding: 25px 10px 25px 10px;
+	color: black;
+  font-size: 20px;
+  width: 40%
+}
+
+
+#userDetect{
+  font-size: 60 px;
+	color: black;
+  text-align: center;
+
+}
+
+#mainFrame {
+  width: 60%;
+  margin: auto;
+  background-color: gray;
+  border-style: solid;
+  border-width: 5px;
+}
+
+#title{
+  color: black;
+  font-size: 54px;
+}
+
+#subTitle{
+  color: black;
+  font-size: 20px;
+}
+#topBlock{
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+}
+#mainBlock{
+  display : flex;
+  flex-direction: row;
+  justify-content:center;
+}
+
+#robot{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%
+}
+
+#radio_button_list{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+}
+span{
+  color: black;
+  font-size: 20px;
+  display: inline-block;
+}
+
+.option {
+  width: 100%;
+  display: flex;
+  padding: 10px 20px 10px 20px;
+  margin: 10px 0 10px 0;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  font-size: 20px;
+  align-items: center;
+}
+
+#bottonBlock{
+  display:flex;
+  flex-direction:column;
+  justify-content: space-around;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  font-size: 20px;
+}
+
+#buttonBlock{
+    display: flex;
+    flex-direction:column;
+    margin: 10px;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+
+}
+
+
+div.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 50px;
+}
+
+canvas {
+  margin: 10px;
+  border: 2px gray solid;
+}
